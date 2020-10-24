@@ -18,6 +18,8 @@ public class User {
     private String email;
     private String password;
 
+    private UserRole role = UserRole.ROLE_GUEST;
+
     public String getId() {
         return this.id;
     }
@@ -50,4 +52,11 @@ public class User {
         this.password = password;
     }
 
+    public UserRole getRole() {
+        return this.role;
+    }
+
+    public void setRole(UserRole role) {
+        this.role = role;
+    }
 }

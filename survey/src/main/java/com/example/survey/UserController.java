@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -18,31 +17,36 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin
 public class UserController {
     @Autowired
-    private UserRepository userRepository;
+    private UserService service;
 
     @GetMapping("/")
     public List<User> GetUsers(){
-        return userRepository.findAll();
+        return service.getAll();
     }
     @GetMapping("/{id}")
     public User GetUser(@PathVariable String id){
-        return userRepository.findById(id).orElse(null);
+        return service.getById(id);
     }
     @PostMapping("/")
     public User PostUser(User user){
-        return userRepository.save(user);
+        return service.save(user);
     }
-    @PutMapping("/")
-    public User PutUser(@RequestBody User user){
-        User oldUser = userRepository.findById(user.getId()).orElse(null);
+    @PutMapping("/{id}")
+    public User PutUser(@PathVariable String id,User user){
+        User oldUser = service.getById(id);
         oldUser.setName(user.getName());
         oldUser.setEmail(user.getEmail());
         oldUser.setPassword(user.getPassword());
-        return userRepository.save(oldUser);
+        return service.save(oldUser);
     }
     @DeleteMapping("/{id}")
     public String DeleteUser(@PathVariable String id){
-        userRepository.deleteById(id);
+        service.delete(id);
         return id;
+    }
+ 
+    @GetMapping("/hello")
+    public List<User> GetHelloUsers() {
+        return service.getAll();
     }
 }
